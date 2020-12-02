@@ -2,104 +2,142 @@
 
 > SDC
 
-## Related Projects
+## CRUD Operations
 
-  - Create / POST
-      1. Endpoint
-        * /listings/:listing_id/create
-      2. Path params
-        * :listing_id
-      3. Request body
-        * {
-            date: string,
-            sale: boolean,
-            pending: boolean,
-            construction: boolean,
-            address: string,
-            price: number,
-            beds: number,
-            baths: number,
-            images: array,
-          }
-      4. Response object
-        * {id: number} correlating to the new posting
+  ### For site visitors / home buyers
 
-  - Read / GET
-      1. Endpoint
-        * /listings/:listing_id
-      2. Path params
-        * :listing_id
-      3. Request body
-        * {id: number}
-      4. Response object
-        * {
-            id: number,
-            date: string,
-            sale: boolean,
-            pending: boolean,
-            construction: boolean,
-            address: string,
-            price: number,
-            beds: number,
-            baths: number,
-            images: array,
-          }
-
-  - Update / PUT
-      Updating price
-      1. Endpoint
-        * /listings/:listing_id/update/price
-      2. Path params
-        * :listing_id
-      3. Request body
-        * {
-            id: number,
-            price: number,
-          }
-      4. Response object
-        * {
-            id: number,
-            price: number,
-          }
-
-      Adding images
-      1. Endpoint
-        * /listings/:listing_id/update/images/add
-      2. Path params
-        * :listing_id
-      3. Request body
-        * {
-            id: number,
-            images: array,
-          }
-      4. Response object
-        * 201 status code
-
-      Removing images
-      1. Endpoint
-        * /listings/:listing_id/update/images/remove
-      2. Path params
-        * :listing_id
-      3. Request body
-        * {
-            id: number,
-            images: array,
-          }
-      4. Response object
-        * 201 status code
+  ##### Read / GET : Upon page-load
+  1. Endpoint
+    - /listings/:listing_id
+  2. Path params
+    - listing_id
+  3. Request body
+    - {id: number}
+  4. Response object
+    - {
+        id: number,
+        date: string,
+        sale: boolean,
+        pending: boolean,
+        construction: boolean,
+        address: string,
+        price: number,
+        beds: number,
+        baths: number,
+        images: array,
+      }
+  ##### Update / PUT: Adds the contact info of interested buyers to the listing
+  1. Endpoint
+    - /listings/:listing_id/update/contacts
+  2. Path params
+    - listing_id
+  3. Request body
+    - {
+        name: string,
+        email: string,
+        phone: string,
+      }
+  4. Response object
+    - 201 Status
 
 
-  - Delete / DELETE
-      1. Endpoint
-        * /listings/:listing_id/delete
-      2. Path params
-        * :listing_id
-      3. Request body
-        * {
-            id: number,
-          }
-      4. Response object
-        * 201 status code
+  ### For home sellers
+
+  ##### Create / POST: Post a home to Trulia
+  1. Endpoint
+    - /user/:user_id/create
+  2. Path params
+    - user_id
+  3. Request body
+    - {
+        date: string,
+        sale: boolean,
+        pending: boolean,
+        construction: boolean,
+        address: string,
+        price: number,
+        beds: number,
+        baths: number,
+        images: array,
+      }
+  4. Response object
+    - {id: number} correlating to the new posting
+
+  ##### Read / GET: Get current offers on user's home
+  1. Endpoint
+    - /user/:user_id/:listing_id
+  2. Path params
+    - user_id, listing_id
+  3. Request body
+    - {id: number}
+  4. Response object
+    - [{
+        name: string,
+        email: string,
+        phone: string,
+      },
+      {
+        name: string,
+        email: string,
+        phone: string,
+      }]
+
+  ##### Update / PUT: Update price on home
+  1. Endpoint
+    - /user/:user_id/:listing_id/update/price
+  2. Path params
+    - user_id, listing_id
+  3. Request body
+    - {
+        id: number,
+        price: number,
+      }
+  4. Response object
+    - {
+        id: number,
+        price: number,
+      }
+
+  ##### Update / PUT: Adding images
+  1. Endpoint
+    - /user/:user_id/:listing_id/update/images/add
+  2. Path params
+    - user_id, listing_id
+  3. Request body
+    - {
+        id: number,
+        images: array,
+      }
+  4. Response object
+    - 201 status code
+
+  ##### Update / PUT: Removing images
+  1. Endpoint
+    - /user/:user_id/:listing_id/update/images/remove
+  2. Path params
+    - user_id, listing_id
+  3. Request body
+    - {
+        id: number,
+        images: array,
+      }
+  4. Response object
+    - 201 status code
+
+
+  ##### Delete / DELETE: Remove entire listing
+  1. Endpoint
+    - /user/:user_id/:listing_id/delete
+  2. Path params
+    - user_id, listing_id
+  3. Request body
+    - {
+        id: number,
+      }
+  4. Response object
+    - 201 status code
+
+
 
 ## Related Projects
 
