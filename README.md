@@ -26,20 +26,7 @@
         baths: number,
         images: array,
       }
-  ##### Update / PUT: Adds the contact info of interested buyers to the listing
-  1. Endpoint
-    - /listings/:listing_id/update/contacts
-  2. Path params
-    - listing_id
-  3. Request body
-    - {
-        name: string,
-        email: string,
-        phone: string,
-      }
-  4. Response object
-    - 201 Status
-
+      201 status
 
   ### For home sellers
 
@@ -61,78 +48,56 @@
         images: array,
       }
   4. Response object
-    - {id: number} correlating to the new posting
+    - {id: number}
 
-  ##### Read / GET: Get current offers on user's home
+  ##### Create / POST: Add images
   1. Endpoint
-    - /user/:user_id/:listing_id
+    - /user/:user_id/:listing_id/images/add
   2. Path params
     - user_id, listing_id
+  3. Request body
+    - {
+        id: number,
+        images: array,
+      }
+  4. Response object
+    - 201 status code
+
+  ##### Read / GET: View one image
+  1. Endpoint
+    - /user/:user_id/:listing_id/images/:image_id
+  2. Path params
+    - user_id, listing_id, image_id
   3. Request body
     - {id: number}
   4. Response object
-    - [{
-        name: string,
-        email: string,
-        phone: string,
-      },
-      {
-        name: string,
-        email: string,
-        phone: string,
-      }]
+    - {
+        image: url
+      }
+      201 Status code
 
-  ##### Update / PUT: Update price on home
+  ##### Update / PUT: Update one image
   1. Endpoint
-    - /user/:user_id/:listing_id/update/price
+    - /user/:user_id/:listing_id/images/:image_id/update
   2. Path params
-    - user_id, listing_id
+    - user_id, listing_id, image_id
   3. Request body
     - {
-        id: number,
-        price: number,
+        id: number
+        image: string (url),
       }
   4. Response object
-    - {
-        id: number,
-        price: number,
-      }
+    - 201 Status code
 
-  ##### Update / PUT: Adding images
+  ##### Delete / Delete: Removing images
   1. Endpoint
-    - /user/:user_id/:listing_id/update/images/add
+    - /user/:user_id/:listing_id/images/:image_id/update
   2. Path params
-    - user_id, listing_id
+    - user_id, listing_id, image_id
   3. Request body
     - {
         id: number,
         images: array,
-      }
-  4. Response object
-    - 201 status code
-
-  ##### Update / PUT: Removing images
-  1. Endpoint
-    - /user/:user_id/:listing_id/update/images/remove
-  2. Path params
-    - user_id, listing_id
-  3. Request body
-    - {
-        id: number,
-        images: array,
-      }
-  4. Response object
-    - 201 status code
-
-
-  ##### Delete / DELETE: Remove entire listing
-  1. Endpoint
-    - /user/:user_id/:listing_id/delete
-  2. Path params
-    - user_id, listing_id
-  3. Request body
-    - {
-        id: number,
       }
   4. Response object
     - 201 status code
