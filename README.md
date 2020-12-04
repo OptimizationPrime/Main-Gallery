@@ -12,7 +12,7 @@
   2. Path params
     - listing_id
   3. Request body
-    - {id: number}
+    - none
   4. Response object
     - {
         id: number,
@@ -57,26 +57,25 @@
     - user_id, listing_id
   3. Request body
     - {
-        id: number,
         images: array,
       }
   4. Response object
     - 201 status code
 
-  ##### Read / GET: View one image
+  ##### Read / GET: View one image *optional*
   1. Endpoint
     - /user/:user_id/:listing_id/images/:image_id
   2. Path params
     - user_id, listing_id, image_id
   3. Request body
-    - {id: number}
+    - none
   4. Response object
     - {
         image: url
       }
       201 Status code
 
-  ##### Update / PUT: Update one image
+  ##### Update / PUT: Update listing
   1. Endpoint
     - /user/:user_id/:listing_id/images/:image_id/update
   2. Path params
@@ -84,21 +83,18 @@
   3. Request body
     - {
         id: number
-        image: string (url),
+        price: number, / image: string
       }
   4. Response object
     - 201 Status code
 
-  ##### Delete / Delete: Removing images
+  ##### Delete / Delete: Removing listing
   1. Endpoint
     - /user/:user_id/:listing_id/images/:image_id/update
   2. Path params
     - user_id, listing_id, image_id
   3. Request body
-    - {
-        id: number,
-        images: array,
-      }
+    - none
   4. Response object
     - 201 status code
 
