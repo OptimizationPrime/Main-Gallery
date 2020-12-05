@@ -11,6 +11,7 @@ const getImages = (j) => {
   for (let i = 0; i < 10; i += 1) {
     arr.push(`https://trulia-sdc.s3-us-west-1.amazonaws.com/listing${j % 10}/image${i}.jpg`);
   }
+
   return arr;
 };
 
