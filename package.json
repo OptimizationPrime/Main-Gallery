@@ -10,7 +10,9 @@
   "scripts": {
     "start": "nodemon server/index.js",
     "webpack": "webpack -d --watch",
-    "seed": "node ./db/seed.js",
+    "seedListings": "node ./seedListings.js",
+    "seedImages": "node ./seedImages.js",
+    "seedUsers": "node ./seedUsers.js",
     "test": "jest",
     "lint": "./node_modules/.bin/eslint"
   },

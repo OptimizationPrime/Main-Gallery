@@ -3,20 +3,11 @@ const faker = require('faker');
 const { argv } = require('yargs');
 
 const lines = argv.lines || 10000000;
-const filename = argv.output || 'data.csv';
+const filename = argv.output || 'listings.csv';
 const stream = fs.createWriteStream(filename);
 
-const getImages = (j) => {
-  const arr = [];
-  for (let i = 0; i < 10; i += 1) {
-    arr.push(`https://trulia-sdc.s3-us-west-1.amazonaws.com/listing${j % 10}/image${i}.jpg`);
-  }
-
-  return arr;
-};
-
 const createPost = (i) => {
-  const _key = i;
+  const listingId = i;
   const posted = faker.date.past();
   const sale = i % 2 !== 0;
   const pending = i % 5 !== 0;
@@ -25,14 +16,9 @@ const createPost = (i) => {
   const price = Math.floor(Math.random() * (2000000 - 500000 + 1)) + 500000;
   const beds = Math.floor(Math.random() * (5 - 2 + 1)) + 2;
   const baths = Math.floor(Math.random() * 3) + 1;
-  const username = faker.internet.userName();
-  const firstName = faker.name.firstName();
-  const lastName = faker.name.lastName();
-  const email = faker.internet.email();
-  const phone = faker.phone.phoneNumber();
-  const images = getImages(i);
+  const userId = Math.floor(Math.random() * 10000);
 
-  return `${_key},${posted},${sale},${pending},${construction},${homeAddress},${price},${beds},${baths},${username},${firstName},${lastName},${email},${phone},${images}\n`;
+  return `${listingId},${posted},${sale},${pending},${construction},${homeAddress},${price},${beds},${baths},${userId}\n`;
 };
 
 const seed = (writeStream, encoding, done) => {
@@ -60,7 +46,7 @@ const seed = (writeStream, encoding, done) => {
 };
 
 // header line in the csv file
-stream.write('listingId,posted,sale,pending,construction,homeAddress,price,beds,baths,username,firstName,lastName,email,phone,images\n', 'utf-8');
+stream.write('listingId,posted,sale,pending,construction,homeAddress,price,beds,baths,userId\n', 'utf-8');
 
 seed(stream, 'utf-8', () => {
   stream.end();
