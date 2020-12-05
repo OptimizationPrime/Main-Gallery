@@ -1,5 +1,4 @@
 const fs = require('fs');
-const faker = require('faker');
 const { argv } = require('yargs');
 
 const lines = argv.lines || 10000000;
