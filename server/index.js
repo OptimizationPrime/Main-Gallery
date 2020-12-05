@@ -1,6 +1,7 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var controller = require('../controllers/listing.js');
+const express = require('express');
+const bodyParser = require('body-parser');
+const controller = require('../controllers/listing.js');
+const arangojs = require('arangojs');
 
 // const path = require('path')
 

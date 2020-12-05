@@ -1,112 +1,67 @@
-let mongoose = require('mongoose');
-let Schema = require('./schema.js');
-let faker = require('faker');
+const fs = require('fs');
+const faker = require('faker');
+const { argv } = require('yargs');
 
+const lines = argv.lines || 10000000;
+const filename = argv.output || 'data.csv';
+const stream = fs.createWriteStream(filename);
 
-//mongoose.connect('mongodb://localhost/main-gallery');
-
-// TODO:
-// 1) Take out hardcoded data and create helper functions to generate inputs.
-// 2) Drop database before wrtiting to again.
-
-
-function createRecord(listingID, address, price, bed, bath, images) {
-  const listing = {
-    listing_id: listingID,
-    topHeader: {
-      sale: 1,
-      pending: 0,
-      new: 0,
-      construction: 0,
-    },
-    address: address,
-    price: price,
-    bed: bed,
-    bath: bath,
-    images: images,
+const getImages = (j) => {
+  const arr = [];
+  for (let i = 0; i < 10; i += 1) {
+    arr.push(`https://trulia-sdc.s3-us-west-1.amazonaws.com/listing${j % 10}/image${i}.jpg`);
   }
-  return listing;
-}
-
-// function getRandomInt(min, max) {
-//   min = Math.ceil(min);
-//   max = Math.floor(max);
-//   return Math.floor(Math.random() * (max - min + 1)) + min;
-// }
-
-function listingGalleryGenerator(currentFolder) {
-  let images = [];
-  if(currentFolder === 1) {
-    let counter = 1;
-    while(counter <= 77) {
-      let url = `https://s3-us-west-1.amazonaws.com/hackreactor.fec.trulia.photos/Home1/Home-1-${counter}.jpg`
-      images.push(url)
-      counter++;
-    }
-  } else {
-    if(currentFolder === 2) {
-      let counter = 1;
-      while(counter <= 31) {
-      let url = `https://s3-us-west-1.amazonaws.com/hackreactor.fec.trulia.photos/Home2/Home-2-${counter}.jpg`
-      images.push(url)
-      counter++;
-      }
-    } else {
-    if(currentFolder === 3) {
-      let counter = 1;
-      while(counter <= 39) {
-        let url = `https://s3-us-west-1.amazonaws.com/hackreactor.fec.trulia.photos/Home3/Home-3-${counter}.jpg`
-        images.push(url)
-        counter++;
-        }
-      }
-    }
-  }
-  return images;
+  return arr;
 };
 
-function seedDB(entries) {
-  let created = 1;
-  let folder = 1;
-  let address= '232 Clinton Park';
-  let price = 1875000;
-  let bed = 4;
-  let bath = 3;
-  while (created <= 100) {
-    // Image folder assignment and url generator
-    let images = listingGalleryGenerator(folder);
-    if(folder === 1) {
-      address= '232 Clinton Park';
-      price = 1875000;
-      bed = 4;
-      bath = 3;
-    }
-    if(folder === 2) {
-      address= '4137 Hidden Oaks Rd';
-      price = 65000000;
-      bed = 10;
-      bath = 7;
-    }
-    if(folder === 3) {
-      address= '23800 Malibu Crest Dr';
-      price = 1495000;
-      bed = 4;
-      bath = 2;
-      folder = 0;
-    }
-    // Faker address
-    // var address = faker.address.streetAddress();
-    // Call to write to database
-    Schema.write(createRecord(created, address, price, bed, bath, images), (err, data) => {
-      if (err) {
-       console.log('insert failed', err)
-     } else {
-       console.log('insert success');
-     }
-    })
-    folder++;
-    created ++;
-  }
-}
+const createPost = (i) => {
+  const _key = i;
+  const posted = faker.date.past();
+  const sale = i % 2 !== 0;
+  const pending = i % 5 !== 0;
+  const construction = i % 15 !== 0;
+  const homeAddress = faker.address.streetAddress();
+  const price = Math.floor(Math.random() * (2000000 - 500000 + 1)) + 500000;
+  const beds = Math.floor(Math.random() * (5 - 2 + 1)) + 2;
+  const baths = Math.floor(Math.random() * 3) + 1;
+  const username = faker.internet.userName();
+  const firstName = faker.name.firstName();
+  const lastName = faker.name.lastName();
+  const email = faker.internet.email();
+  const phone = faker.phone.phoneNumber();
+  const images = getImages(i);
 
-seedDB();
+  return `${_key},${posted},${sale},${pending},${construction},${homeAddress},${price},${beds},${baths},${username},${firstName},${lastName},${email},${phone},${images}\n`;
+};
+
+const seed = (writeStream, encoding, done) => {
+  let i = lines;
+  function writing() {
+    let ok = true;
+    do {
+      i -= 1;
+      const post = createPost(i);
+      // check if i === 0 so we would write and call `done`
+      if (i === 0) {
+        // we are done so fire callback
+        writeStream.write(post, encoding, done);
+      } else {
+        // we are not done so don't fire callback
+        writeStream.write(post, encoding);
+      }
+      // else call write and continue looping
+    } while (i > 0 && ok);
+    if (i > 0 && !ok) {
+      writeStream.once('drain', writing);
+    }
+  }
+  writing();
+};
+
+// header line in the csv file
+stream.write('listingId,posted,sale,pending,construction,homeAddress,price,beds,baths,username,firstName,lastName,email,phone,images\n', 'utf-8');
+
+seed(stream, 'utf-8', () => {
+  stream.end();
+  console.log('finished seeding');
+});
