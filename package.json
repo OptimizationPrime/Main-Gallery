@@ -13,6 +13,8 @@
     "seedListings": "node ./seedListings.js",
     "seedImages": "node ./seedImages.js",
     "seedUsers": "node ./seedUsers.js",
+    "seedArango": "node ./arangoGenerator.js",
+    "createUsers": "node ./arangoUserGen.js",
     "test": "jest",
     "lint": "./node_modules/.bin/eslint"
   },

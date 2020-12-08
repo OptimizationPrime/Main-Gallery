@@ -29,3 +29,5 @@ node_modules
 ## Key Files
 *.pem
 *.csv
+arangoData.json
+arangoDataTest.json

@@ -1,39 +1,27 @@
 const fs = require('fs');
+const faker = require('faker');
 const { argv } = require('yargs');
 
-const lines = argv.lines || 100000000;
-const filename = argv.output || 'images.csv';
+const lines = argv.lines || 10000;
+const filename = argv.output || 'arangoUserData.js';
 const stream = fs.createWriteStream(filename);
 
-const getImages = (j) => {
-  const arr = [];
-  for (let i = 0; i < 10; i += 1) {
-    arr.push(`https://trulia-sdc.s3-us-west-1.amazonaws.com/listing${j % 10}/image${i}.jpg`);
-  }
-
-  return arr;
-};
-
-let li = 0;
-let id = 0;
-let listId = 0;
 const createPost = (i) => {
-  if (id === 10) {
-    id = 0;
-  }
+  const userId = i;
+  const username = faker.internet.userName();
+  const firstName = faker.name.firstName();
+  const lastName = faker.name.lastName();
+  const email = faker.internet.email();
+  const phone = faker.phone.phoneNumber();
 
-  const imageId = i;
-  const image = `https://trulia-sdc.s3-us-west-1.amazonaws.com/listing${id}/image${i % 10}.jpg`;
-  const listingId = listId;
-
-  li += 1;
-  if (li === 10) {
-    li = 0;
-    id += 1;
-    listId += 1;
-  }
-
-  return `${imageId},${image},${listingId}\n`;
+  return {
+    userId,
+    username,
+    firstName,
+    lastName,
+    email,
+    phone,
+  };
 };
 
 const seed = (writeStream, encoding, done) => {
@@ -42,15 +30,16 @@ const seed = (writeStream, encoding, done) => {
     let ok = true;
     do {
       i -= 1;
-      const post = createPost(i);
+      const post = JSON.stringify(createPost(i));
       // check if i === 0 so we would write and call `done`
       if (i === 0) {
         // we are done so fire callback
         writeStream.write(post, encoding, done);
       } else {
         // we are not done so don't fire callback
-        ok = writeStream.write(post, encoding);
+        writeStream.write(post, encoding);
       }
+      writeStream.write(', ');
       // else call write and continue looping
     } while (i > 0 && ok);
     if (i > 0 && !ok) {
@@ -61,7 +50,7 @@ const seed = (writeStream, encoding, done) => {
 };
 
 // header line in the csv file
-stream.write('imageId,images,listingId\n', 'utf-8');
+stream.write('test\n', 'utf-8');
 
 seed(stream, 'utf-8', () => {
   stream.end();
