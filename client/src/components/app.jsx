@@ -10,27 +10,29 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      listing: []
-    }
+      listing: [],
+    };
     this.nextListing = this.nextListing.bind(this);
     this.previousListing = this.previousListing.bind(this);
   }
 
   componentDidMount() {
-    //udpate to axios get request to get the dummy data from the server side
-    //this.setState({groceries: dummyData})
-    axios.get(`${window.location}homesData`)
-    //http://localhost:8040/listings/1/
-    .then((res) => {
-      this.setState({listing: res.data})
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    console.log(window.location.pathname);
+    const path = window.location.pathname
+    // udpate to axios get request to get the dummy data from the server side
+    // this.setState({groceries: dummyData})
+    axios.get(`localhost:804${path}`)
+    // http://localhost:8040/listings/1/
+      .then((res) => {
+        this.setState({ listing: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   nextListing(event) {
-    let url = window.location.href.split('/');
+    const url = window.location.href.split('/');
     let id = parseInt(url[url.length - 2]);
 
     if (id === 100) {
@@ -40,49 +42,49 @@ class App extends React.Component {
       id++;
       url[url.length - 2] = id;
     }
-    let prevListing = url.join('/')
-    console.log('New for URL :', prevListing)
-    window.location.assign(prevListing)
+    const prevListing = url.join('/');
+    console.log('New for URL :', prevListing);
+    window.location.assign(prevListing);
     axios.get(prevListing)
-    .then((res) => {
-      this.setState({listing: res.data})
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((res) => {
+        this.setState({ listing: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
+
   previousListing(event) {
-    let url = window.location.href.split('/');
+    const url = window.location.href.split('/');
     let id = parseInt(url[url.length - 2]);
     if (id === 1) {
       id = 100;
       url[url.length - 2] = id;
     } else {
-      id -= 1
+      id -= 1;
       url[url.length - 2] = id;
     }
-    let prevListing = url.join('/')
-    window.location.assign(prevListing)
+    const prevListing = url.join('/');
+    window.location.assign(prevListing);
     axios.get(prevListing)
-    .then((res) => {
-      this.setState({listing: res.data})
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((res) => {
+        this.setState({ listing: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
-
 
   render() {
     if (this.state.listing.length === 0) {
-      return <div><Redirect /></div>
+      return <div><Redirect /></div>;
     }
 
     return (
       <div className={styles['responsive-div']}>
         <Navbar />
-        <Details listing={this.state.listing}/>
-        <Gallery listing={this.state.listing}/>
+        <Details listing={this.state.listing} />
+        <Gallery listing={this.state.listing} />
         {/* <div className={styles['navbar']}>
           <div className={styles['nav-btn-box']}>
           <button className={styles['nav-btn']} onClick={this.previousListing}>Previous</button>
@@ -92,9 +94,8 @@ class App extends React.Component {
           </div>
         </div> */}
       </div>
-    )
+    );
   }
 }
-
 
 export default App;

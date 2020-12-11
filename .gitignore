@@ -30,4 +30,8 @@ node_modules
 *.pem
 *.csv
 arangoData.json
+arangoImageData.json
+arangoListingData.json
+arangoListingDataNoObj.json
+arangoUserData.json
 arangoDataTest.json

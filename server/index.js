@@ -1,23 +1,26 @@
+require('newrelic');
+
 const express = require('express');
-const bodyParser = require('body-parser');
-const controller = require('../controllers/listing.js');
+const parser = require('body-parser');
+const morgan = require('morgan');
+
 const arangojs = require('arangojs');
+const router = require('./routes.js');
 
 // const path = require('path')
 
 const app = express();
+app.use(morgan('dev'));
+app.use(parser.json());
+
 const PORT = 8040;
 
-app.use(bodyParser.json());
-app.use('/gallery/:id', express.static('client/dist'));
+app.use('/listings/:listing_id', express.static('client/dist'));
 
+app.use('/', router);
 
 // app.get('/listings/:id/db', controller.getAll);
 
 app.listen(PORT, () => {
-  console.log(`Listening on 127.0.0.1:${PORT}`);
+  console.log(`Listening on port ${PORT}`);
 });
-
-// app.get('/db', controller.get);
-app.get('/*/:id/homesData', controller.getListings);
-

@@ -4,19 +4,13 @@ const { argv } = require('yargs');
 const userData = require('./arangoUserData.js');
 
 const lines = argv.lines || 10000000;
-const filename = argv.output || 'arangoData.json';
+const filename = argv.output || 'arangoListingDataNoObj.json';
 const stream = fs.createWriteStream(filename);
 
 let li = 0;
 let id = 0;
-let dec = 99999999;
 const createPost = (i) => {
-  const userId = Math.floor(Math.random() * 10000);
-  const username = userData[userId].username;
-  const firstName = userData[userId].firstName;
-  const lastName = userData[userId].lastName;
-  const email = userData[userId].email;
-  const phone = userData[userId].phone;
+  const userId = (Math.floor(Math.random() * 10000)).toString();
   const _key = i.toString();
   const posted = faker.date.past();
   const sale = i % 2 !== 0;
@@ -32,12 +26,7 @@ const createPost = (i) => {
   }
   const arr = [];
   for (let j = 0; j < 10; j += 1) {
-    arr.unshift({
-      imageId: dec,
-      image: `https://trulia-sdc.s3-us-west-1.amazonaws.com/listing${li}/image${j}.jpg`,
-      listingId: i,
-    });
-    dec -= 1;
+    arr.push(`https://trulia-sdc.s3-us-west-1.amazonaws.com/listing${li}/image${j}.jpg`);
   }
   li += 1;
   if (li === 10) {
@@ -47,6 +36,7 @@ const createPost = (i) => {
 
   return {
     _key,
+    userId,
     posted,
     sale,
     pending,
@@ -55,14 +45,6 @@ const createPost = (i) => {
     price,
     beds,
     baths,
-    user: {
-      userId,
-      username,
-      firstName,
-      lastName,
-      email,
-      phone,
-    },
     images: arr,
   };
 };
