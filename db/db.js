@@ -9,7 +9,7 @@ db.useBasicAuth('root', '');
 
 // Collections
 // const users = db.collection('users');
-const listings = db.collection('listingsArr');
+// const listings = db.collection('listingsArr');
 // const images = db.collection('images');
 
 module.exports = db;

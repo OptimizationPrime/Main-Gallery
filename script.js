@@ -24,11 +24,5 @@ export const options = {
 export default function main() {
   let res = http.get('http://localhost:8040/listings/43/api');
   check(res, { 'status was 200': (r) => r.status === 200 });
-
-  // let response;
-
-  // response = http.get('http://test.k6.io');
-
-  // Automatically added sleep
   sleep(1);
 }

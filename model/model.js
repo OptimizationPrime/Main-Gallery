@@ -23,7 +23,6 @@ module.exports = {
         _from: `users/${resultListing.userId}`,
         _to: resultListing._id,
       };
-      console.log('first', q);
       const addEdge = await db.query(aql`
         INSERT ${q} INTO edge
         RETURN NEW
