@@ -12,7 +12,7 @@
     "webpack": "webpack -d --watch",
     "seedArango": "node ./seeding/arangoGenerator.js",
     "createUsers": "node ./seeding/arangoUserGen.js",
-    "createListings": "node ./seeding/arangoListingGen.js",
+    "createListings": "node ./seeding/arangoListingGen.js --lines 500000",
     "createImages": "node ./seeding/arangoImageGen.js",
     "stress": "k6 run script.js",
     "test": "jest",
