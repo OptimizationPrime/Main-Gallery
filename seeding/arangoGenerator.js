@@ -3,8 +3,9 @@ const faker = require('faker');
 const { argv } = require('yargs');
 const userData = require('./arangoUserData.js');
 
-const lines = argv.lines || 10000000;
+const lines = argv.lines || 1000000;
 const filename = argv.output || 'seeding/arangoListingDataNoObj.json';
+const start = argv.start || 0;
 const stream = fs.createWriteStream(filename);
 
 let li = 0;
@@ -55,7 +56,7 @@ const seed = (writeStream, encoding, done) => {
     let ok = true;
     do {
       i -= 1;
-      const post = JSON.stringify(createPost(i));
+      const post = JSON.stringify(createPost(start + i));
       // check if i === 0 so we would write and call `done`
       if (i === 0) {
         // we are done so fire callback
