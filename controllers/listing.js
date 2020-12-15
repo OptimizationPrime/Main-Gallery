@@ -1,82 +1,39 @@
-var listings = require('../db/schema.js');
-var mongo = require('../db/mongo.js');
+const model = require('../model/model.js');
 
 /* eslint-disable array-callback-return */
 // const schema = require('../db/schema.js');
-
-getListings = (req, res) => {
-  // if(typeof req.params.id !== "number") {
-  //   res.sendStatus(403)
-  // }
-  const query = listings.ListingsModel.where({ listing_id: req.params.id });
-  mongo.connect();
-  query.find((err, listings) => {
-   if (err) {
-     res.status(404)
-     console.log(err.message);
-     mongo.db.close();
-   } else {
-      res.status(200).send(listings);
-      mongo.db.close();
-    }
-  }
- )
-}
 module.exports = {
-  getListings
-}
+  get: (req, res) => {
+    model.getListing(req.params.listing_id, (err, result) => {
+      if (err) {
+        console.log('error');
+        res.sendStatus(400);
+      } else {
+        res.send(result);
+      }
+    });
+  },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// module.exports = {
-//   get: (req, res) => {
-//     mongo.connect();
-//     const query = schema.Listing.where({ id: req.params.id });
-//     query.findOne((err, data) => {
-//       if (err) {
-//         res.status(404);
-//         mongo.db.close();
-//       } else {
-//         res.status(200).send(data);
-//         mongo.db.close();
-//       }
-//     });
-//   },
-//   getAll: (req, res) => {
-//     mongo.connect();
-//     schema.getAllListings.find((err, data) => {
-//       if (err) {
-//         res.status(404);
-//       } else {
-//         res.status(200).send(data);
-//         mongo.db.close();
-//       }
-//     });
-//   },
-// };
-
-
+  post: (req, res) => {
+    const listing = {
+      userId: req.params.user_id,
+      posted: req.body.posted,
+      sale: req.body.sale,
+      pending: req.body.pending,
+      construction: req.body.construction,
+      homeAddress: req.body.homeAddress,
+      price: req.body.price,
+      beds: req.body.beds,
+      baths: req.body.baths,
+      images: req.body.images,
+    };
+    model.addListing(listing, (err) => {
+      if (err) {
+        console.log('error');
+        res.sendStatus(400);
+      } else {
+        res.sendStatus(200);
+      }
+    });
+  },
+};
