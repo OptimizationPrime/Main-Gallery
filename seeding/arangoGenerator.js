@@ -4,7 +4,7 @@ const { argv } = require('yargs');
 const userData = require('./arangoUserData.js');
 
 const lines = argv.lines || 10000000;
-const filename = argv.output || 'arangoListingDataNoObj.json';
+const filename = argv.output || 'seeding/arangoListingDataNoObj.json';
 const stream = fs.createWriteStream(filename);
 
 let li = 0;

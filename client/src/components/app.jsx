@@ -21,7 +21,7 @@ class App extends React.Component {
     const path = window.location.pathname
     // udpate to axios get request to get the dummy data from the server side
     // this.setState({groceries: dummyData})
-    axios.get(`localhost:804${path}`)
+    axios.get(`localhost:8040${path}`)
     // http://localhost:8040/listings/1/
       .then((res) => {
         this.setState({ listing: res.data });

@@ -1,8 +1,7 @@
-require('newrelic');
-
+// require('newrelic');
 const express = require('express');
 const parser = require('body-parser');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 
 const arangojs = require('arangojs');
 const router = require('./routes.js');
@@ -10,14 +9,14 @@ const router = require('./routes.js');
 // const path = require('path')
 
 const app = express();
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 app.use(parser.json());
+
+app.use('/', router);
 
 const PORT = 8040;
 
-app.use('/listings/:listing_id', express.static('client/dist'));
-
-app.use('/', router);
+app.use('/home/:listing_id', express.static('client/dist'));
 
 // app.get('/listings/:id/db', controller.getAll);
 

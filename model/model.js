@@ -4,7 +4,9 @@ const db = require('../db/db.js');
 
 module.exports = {
   getListing: (id, callback) => {
-    db.query(`FOR l IN listingsArr FILTER l._key == "${id}" RETURN l`).then(
+    db.query(`FOR l IN listingsArr FILTER l._key == "${id}" RETURN l`, {}, {
+      stream: true,
+    }).then(
       (cursor) => cursor.all(),
     ).then(
       (result) => callback(null, result),
