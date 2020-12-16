@@ -4,9 +4,10 @@ const model = require('../model/model.js');
 // const schema = require('../db/schema.js');
 module.exports = {
   get: (req, res) => {
+    // console.log(req);
     model.getListing(req.params.listing_id, (err, result) => {
       if (err) {
-        console.log('error');
+        console.log('error in controller');
         res.sendStatus(400);
       } else {
         res.send(result);

@@ -14,11 +14,13 @@ app.use(parser.json());
 
 app.use('/', router);
 
-const PORT = 8040;
+const PORT = 3001;
 
 app.use('/home/:listing_id', express.static('client/dist'));
 
-// app.get('/listings/:id/db', controller.getAll);
+app.get('/loaderio-58866d2ffb0e9d469c47a1ca47ddd9ca', (req, res) => {
+  res.send('loaderio-58866d2ffb0e9d469c47a1ca47ddd9ca');
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
