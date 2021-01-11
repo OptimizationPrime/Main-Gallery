@@ -1,6 +1,4 @@
-# Project Name
-> Optimization Prime - Backend Architecture
-
+# Optimization Prime - Backend Architecture
 
 ## Overview ##
 This project was an improvement to build out the backend to handle significantly increased traffic on existing frontend code for a real estate marketplace app. The database selected was ArangoDB, with 10 Million home listings and 10K users.
