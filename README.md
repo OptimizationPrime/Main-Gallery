@@ -1,11 +1,23 @@
 # Project Name
+> Optimization Prime - Backend Architecture
 
-> SDC
+
+## Overview ##
+This project was an improvement to build out the backend to handle significantly increased traffic on existing frontend code for a real estate marketplace app. The database selected was ArangoDB, with 10 Million home listings and 10K users.
+
+Final results were 2500 requests per second with a 67 ms average response time, and under a 1% error rate by horizontally scaling 3 Express servers on AWS.
+
+## Process ##
+- The ArangoDB database was deployed on an EC2 instance.
+- Local tests (using K6 and New Relic) on the server for the existing codebase was only able to reach 4422 ms average response time with a 22% error rate, at 750 requests per second.
+  - New Relic metrics identified the bottleneck as being the Express server.
+- Two Express servers were deployed with AWS and horizontally scaled with the use of Nginx as a reverse proxy as the initial point of contact for all requests.
+  - Testing on these deployed instances with Loader.io showed a 345 ms average response time with a 11.8% error rate at 1000 rps.
+- Another Express server was deployed and added to the Nginx configuration. There were significant improvement with a third server with a 67 ms average response time with a 0% error rate at 2500 rps.
+- A fourth server was deployed on AWS, but the tests showed diminishing returns with similar results as with 3 servers.
 
 ## CRUD Operations
-
   ### For site visitors / home buyers
-
   ##### Read / GET : Upon page-load
   1. Endpoint
     - /listings/:listing_id
@@ -29,7 +41,6 @@
       201 status
 
   ### For home sellers
-
   ##### Create / POST: Post a home to Trulia
   1. Endpoint
     - /user/:user_id/create
@@ -50,87 +61,17 @@
   4. Response object
     - {id: number}
 
-  ##### Create / POST: Add images
-  1. Endpoint
-    - /user/:user_id/:listing_id/images/add
-  2. Path params
-    - user_id, listing_id
-  3. Request body
-    - {
-        images: array,
-      }
-  4. Response object
-    - 201 status code
+__Built with__
+- Express
+- Node.js
+- ArangoDB
+- Nginx
+- AWS (EC2)
 
-  ##### Read / GET: View one image *optional*
-  1. Endpoint
-    - /user/:user_id/:listing_id/images/:image_id
-  2. Path params
-    - user_id, listing_id, image_id
-  3. Request body
-    - none
-  4. Response object
-    - {
-        image: url
-      }
-      201 Status code
-
-  ##### Update / PUT: Update listing
-  1. Endpoint
-    - /user/:user_id/:listing_id/images/:image_id/update
-  2. Path params
-    - user_id, listing_id, image_id
-  3. Request body
-    - {
-        id: number
-        price: number, / image: string
-      }
-  4. Response object
-    - 201 Status code
-
-  ##### Delete / Delete: Removing listing
-  1. Endpoint
-    - /user/:user_id/:listing_id/images/:image_id/update
-  2. Path params
-    - user_id, listing_id, image_id
-  3. Request body
-    - none
-  4. Response object
-    - 201 status code
+__Other technologies used__
+- K2
+- New Relic
+- Loader.io
 
 
-
-## Related Projects
-
-  - https://github.com/OptimizationPrime/Affordability-Calc
-  - https://github.com/OptimizationPrime/Image-Carousel
-  - https://github.com/OptimizationPrime/reviews
-
-## Table of Contents
-
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
-
-## Usage
-
-> Some usage instructions
-
-## Requirements
-
-An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
-
-- Node 6.13.0
-- etc
-
-## Development
-
-### Installing Dependencies
-
-From within the root directory:
-
-```sh
-npm install -g webpack
-npm install
-```
 

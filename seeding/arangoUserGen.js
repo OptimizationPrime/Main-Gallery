@@ -2,7 +2,7 @@ const fs = require('fs');
 const faker = require('faker');
 const { argv } = require('yargs');
 
-const lines = argv.lines || 10000;
+const lines = argv.lines || 10;
 const filename = argv.output || 'arangoUserData.json';
 const stream = fs.createWriteStream(filename);
 
